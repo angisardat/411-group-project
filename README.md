@@ -19,4 +19,6 @@
     (Push and commit changes after every few lines of code to avoid big errors)
     > Locate Source Control (under the magnifying glass)
     > In the message section, write a few words on the code/changes you added
-    > Press Commit
+    > Press 'Commit'
+    > Press 'Sync Changes'
+    Pressing Sync Changes sends your changes (and the message) to GitHub
