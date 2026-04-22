@@ -12,8 +12,11 @@
     > Locate Source Control (under the magnifying glass)
     > Select the 3 dots '...' (next to the refresh button)
     > Select 'Pull'
-This basically downloads all the code and other members have added to GitHub, this is extremely important to
-make sure you are working on the right code.
+    This basically downloads all the code and other members have added to GitHub, this is extremely important to
+    make sure you are working on the right code.
 
 3. Push/Commiting your changes
     (Push and commit changes after every few lines of code to avoid big errors)
+    > Locate Source Control (under the magnifying glass)
+    > In the message section, write a few words on the code/changes you added
+    > Press Commit
