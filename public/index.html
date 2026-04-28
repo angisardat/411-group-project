@@ -1,15 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project App Name</title> <!-- Change this to app name-->
-
+  <meta charset="UTF-8" />
+  <title>Habit Tracker Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+<header>Habit Tracker Dashboard</header>
 
-    <script src="./app.js"></script> <!-- keep at the end of this code 
-                                        (don't write code under this line) -->
+<div class="container">
+
+  <!-- Streak -->
+  <div class="card">
+    <h3>🔥 Streak</h3>
+    <div id="streak" class="stat">0 days</div>
+  </div>
+
+  <!-- Completed -->
+  <div class="card">
+    <h3>✅ Completed Today</h3>
+    <div id="completedCount" class="stat">0</div>
+  </div>
+
+  <!-- Add Habit -->
+  <div class="card">
+    <h3>➕ Add Habit</h3>
+    <input type="text" id="habitInput" placeholder="Enter habit..." />
+    <button id="addBtn">Add Habit</button>
+  </div>
+
+  <!-- Habit List -->
+  <div class="card">
+    <h3>📋 Your Habits</h3>
+    <ul id="habitList"></ul>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
