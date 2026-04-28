@@ -23,30 +23,53 @@ function renderHabits() {
   habits.forEach((habit, index) => {
     const li = document.createElement("li");
 
+    // Habit name
     const span = document.createElement("span");
     span.textContent = habit.name;
     if (habit.completed) span.classList.add("completed");
 
-    const btn = document.createElement("button");
-    btn.textContent = habit.completed ? "Undo" : "Done";
-    btn.style.width = "70px";
+    // Button container (so buttons sit side-by-side)
+    const actions = document.createElement("div");
 
-    btn.onclick = () => toggleHabit(index);
+    // Done / Undo button
+    const doneBtn = document.createElement("button");
+    doneBtn.textContent = habit.completed ? "Undo" : "Done";
+    doneBtn.style.width = "70px";
+    doneBtn.onclick = () => toggleHabit(index);
 
+    // Delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑️";
+    deleteBtn.style.width = "40px";
+    deleteBtn.style.marginLeft = "5px";
+    deleteBtn.style.background = "#e74c3c";
+
+    deleteBtn.onclick = () => {
+    habits.splice(index, 1); // remove habit
+    saveData();
+    renderHabits();
+    };
+
+    // Append buttons
+    actions.appendChild(doneBtn);
+    actions.appendChild(deleteBtn);
+
+    // Add to list item
     li.appendChild(span);
-    li.appendChild(btn);
-    habitList.appendChild(li);
-  });
+    li.appendChild(actions);
 
-  updateStats();
+    habitList.appendChild(li);
+    });
+
+updateStats();
 }
 
 // Update stats
 function updateStats() {
-  const completed = habits.filter(h => h.completed).length;
-  completedCountEl.textContent = completed;
+const completed = habits.filter(h => h.completed).length;
+completedCountEl.textContent = completed;
 
-  streakEl.textContent = streak + " days";
+streakEl.textContent = streak + " days";
 }
 
 // Add Habit
