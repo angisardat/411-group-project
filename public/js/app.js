@@ -95,8 +95,9 @@ function toggleHabit(index) {
   const today = new Date().toDateString();
 
 if (allCompleted) {
-  if (!lastCompletedDate) {
-    // First time ever completing habits
+  if (streak === 0) {
+    streak = 1;
+  } else if (!lastCompletedDate) {
     streak = 1;
   } else {
     const lastDate = new Date(lastCompletedDate);
@@ -104,16 +105,12 @@ if (allCompleted) {
     const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
     if (diffDays === 1) {
-      // Perfect streak continuation
-      streak += 1;
+      streak += 1; // continue streak
     } else if (diffDays > 1) {
-      // Missed a day → reset streak
-      streak = 1;
+      streak = 1; // reset streak
     }
-    // if diffDays === 0 → same day → DO NOTHING
+    // diffDays === 0 → same day → do nothing
   }
-
-  lastCompletedDate = today;
 }
 
   saveData();
