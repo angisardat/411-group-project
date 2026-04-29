@@ -11,16 +11,22 @@ connectDB();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// GET (read habits)
+// GET all habits
 app.get("/api/habits", async (req, res) => {
   const habits = await Habit.find();
   res.json(habits);
 });
 
-// POST (create habit)
+// POST new habit
 app.post("/api/habits", async (req, res) => {
   const newHabit = await Habit.create(req.body);
   res.json(newHabit);
+});
+
+// DELETE habit
+app.delete("/api/habits/:id", async (req, res) => {
+  await Habit.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
 });
 
 app.listen(PORT, () => {
