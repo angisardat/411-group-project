@@ -1,7 +1,7 @@
 const path = require("path");
 const express   = require("express");
 const connectDB = require("./config/database");
-const Habit   = require("./models/habit-tracker"); // change this line to new database
+const Habit = require("./models/habit.model");
 
 const app = express();
 const PORT = 3000;
