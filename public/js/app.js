@@ -1,7 +1,6 @@
-// Load from localStorage or default values
-let habits = JSON.parse(localStorage.getItem("habits")) || [];
-let streak = JSON.parse(localStorage.getItem("streak")) || 0;
-let lastCompletedDate = localStorage.getItem("lastCompletedDate") || null;
+let habits = [];
+let streak = 0;
+let lastCompletedDate = null;
 
 // DOM Elements
 const habitList = document.getElementById("habitList");
@@ -9,11 +8,13 @@ const completedCountEl = document.getElementById("completedCount");
 const streakEl = document.getElementById("streak");
 const addBtn = document.getElementById("addBtn");
 
-// Save to localStorage
-function saveData() {
-  localStorage.setItem("habits", JSON.stringify(habits));
-  localStorage.setItem("streak", JSON.stringify(streak));
-  localStorage.setItem("lastCompletedDate", lastCompletedDate);
+function loadHabits() {
+  fetch("/api/habits")
+    .then(res => res.json())
+    .then(data => {
+      habits = data;
+      renderHabits();
+    });
 }
 
 // Render UI
@@ -45,9 +46,12 @@ function renderHabits() {
     deleteBtn.style.background = "#e74c3c";
 
     deleteBtn.onclick = () => {
-    habits.splice(index, 1); // remove habit
-    saveData();
-    renderHabits();
+      fetch(`/api/habits/${habit._id}`, {
+      method: "DELETE"
+    })
+    .then(() => {
+        loadHabits();
+      });
     };
 
     // Append buttons
@@ -72,18 +76,28 @@ completedCountEl.textContent = completed;
 streakEl.textContent = streak + " days";
 }
 
-// Add Habit
 addBtn.addEventListener("click", () => {
   const input = document.getElementById("habitInput");
   const value = input.value.trim();
 
   if (value === "") return;
 
-  habits.push({ name: value, completed: false });
-  input.value = "";
-
-  saveData();
-  renderHabits();
+  fetch("/api/habits", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: value,
+      completed: false,
+      streak: 0
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    input.value = "";
+    loadHabits(); // refresh from database
+  });
 });
 
 // Toggle Habit
