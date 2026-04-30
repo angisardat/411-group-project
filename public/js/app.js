@@ -111,9 +111,16 @@ function toggleHabit(habit) {
       completed: !habit.completed
     })
   })
-  .then(res => res.json())
-  .then(() => {
-    loadHabits(); // refresh from DB
+  .then(res => {
+    console.log("PUT response:", res);
+    return res.json();
+  })
+  .then(data => {
+    console.log("Updated habit:", data);
+    loadHabits();
+  })
+  .catch(err => {
+    console.error("PUT error:", err);
   });
 }
 

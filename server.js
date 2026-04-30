@@ -9,7 +9,6 @@ const PORT = 3000;
 connectDB();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
 
 // GET all habits
 app.get("/api/habits", async (req, res) => {
@@ -38,6 +37,8 @@ app.delete("/api/habits/:id", async (req, res) => {
   await Habit.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted" });
 });
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
