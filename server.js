@@ -23,6 +23,16 @@ app.post("/api/habits", async (req, res) => {
   res.json(newHabit);
 });
 
+// PUT (changes habit to done/not done)
+app.put("/api/habits/:id", async (req, res) => {
+  const updated = await Habit.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.json(updated);
+});
+
 // DELETE habit
 app.delete("/api/habits/:id", async (req, res) => {
   await Habit.findByIdAndDelete(req.params.id);

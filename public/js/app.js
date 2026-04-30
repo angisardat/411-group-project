@@ -21,7 +21,7 @@ function loadHabits() {
 function renderHabits() {
   habitList.innerHTML = "";
 
-  habits.forEach((habit, index) => {
+  habits.forEach((habit, _id) => {
     const li = document.createElement("li");
 
     // Habit name
@@ -132,4 +132,4 @@ if (allCompleted) {
 }
 
 // Initial Load
-renderHabits();
+loadHabits();
