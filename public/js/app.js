@@ -36,7 +36,7 @@ function renderHabits() {
     const doneBtn = document.createElement("button");
     doneBtn.textContent = habit.completed ? "Undo" : "Done";
     doneBtn.style.width = "70px";
-    doneBtn.onclick = () => toggleHabit(index);
+    doneBtn.onclick = () => toggleHabit(habit);
 
     // Delete button
     const deleteBtn = document.createElement("button");
@@ -101,34 +101,20 @@ addBtn.addEventListener("click", () => {
 });
 
 // Toggle Habit
-function toggleHabit(index) {
-  habits[index].completed = !habits[index].completed;
-
-  const allCompleted = habits.length > 0 && habits.every(h => h.completed);
-
-  const today = new Date().toDateString();
-
-if (allCompleted) {
-  if (streak === 0) {
-    streak = 1;
-  } else if (!lastCompletedDate) {
-    streak = 1;
-  } else {
-    const lastDate = new Date(lastCompletedDate);
-    const diffTime = new Date(today) - lastDate;
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-    if (diffDays === 1) {
-      streak += 1; // continue streak
-    } else if (diffDays > 1) {
-      streak = 1; // reset streak
-    }
-    // diffDays === 0 → same day → do nothing
-  }
-}
-
-  saveData();
-  renderHabits();
+function toggleHabit(habit) {
+  fetch(`/api/habits/${habit._id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      completed: !habit.completed
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    loadHabits(); // refresh from DB
+  });
 }
 
 // Initial Load
