@@ -7,6 +7,7 @@ const habitList = document.getElementById("habitList");
 const completedCountEl = document.getElementById("completedCount");
 const streakEl = document.getElementById("streak");
 const addBtn = document.getElementById("addBtn");
+const getSuggestion = document.getElementById("getSuggestion"); 
 
 function loadHabits() {
   fetch("/api/habits")
@@ -73,7 +74,8 @@ function updateStats() {
 const completed = habits.filter(h => h.completed).length;
 completedCountEl.textContent = completed;
 
-streakEl.textContent = streak + " days";
+const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak || 0), 0); 
+streakEl.textContent = maxStreak + " days";
 }
 
 addBtn.addEventListener("click", () => {
@@ -101,16 +103,19 @@ addBtn.addEventListener("click", () => {
 });
 
 // Toggle Habit
-function toggleHabit(habit) {
-  fetch(`/api/habits/${habit._id}`, {
+function toggleHabit(habit) 
+{
+  fetch(`/api/habits/${habit._id}`, 
+    {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      completed: !habit.completed
-    })
+      completed: !habit.completed,
+      streak: !habit.completed ? (habit.streak || 0) + 1 : 0
   })
+})
   .then(res => {
     console.log("PUT response:", res);
     return res.json();
@@ -122,7 +127,52 @@ function toggleHabit(habit) {
   .catch(err => {
     console.error("PUT error:", err);
   });
-}
+  };
 
 // Initial Load
 loadHabits();
+
+//triggers API call
+getSuggestion.addEventListener("click", () =>
+{
+  try {
+    const habitNames = habits.map(habit=>habit.name).join(","); 
+
+    if(!habits)
+    {
+      alert("Please input a habit!"); 
+      return; 
+    }
+
+    fetch("/api/suggest",
+  {
+    method: "POST", 
+    headers: 
+    {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({habits: habitNames})
+  })
+.then(res=>{
+  console.log("response: " + res.status)
+  return res.json(); 
+})
+.then(data=>{
+  console.log("data" + data) 
+  console.log(JSON.stringify(data))
+  const suggestions = data.candidates[0].content.parts[0].text; 
+  chatInfo.textContent = suggestions; 
+})
+.catch(err=>
+  {
+    console.error("error" + err)
+  })
+
+  }
+
+  catch
+  {
+    console.log("Error")
+  }
+
+})
