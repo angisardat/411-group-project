@@ -90,6 +90,7 @@ li {
 .nav-left {
   font-size: 20px;
   font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-right {
@@ -101,6 +102,7 @@ li {
   color: white;
   text-decoration: none;
   font-weight: 500;
+  font-family: "Lucida Console", "Courier New", monospace;
   transition: 0.2s;
 }
 
@@ -109,5 +111,6 @@ li {
 }
 
 .nav-link.active {
-  border-bottom: 2px solid white;
+  font-weight: bold;
+  text-decoration: none;
 }
