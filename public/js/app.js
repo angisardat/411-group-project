@@ -98,7 +98,6 @@ addBtn.addEventListener("click", () => {
     body: JSON.stringify({
       name: value,
       completed: false,
-      streak: 0
     })
   })
   .then(res => res.json())
