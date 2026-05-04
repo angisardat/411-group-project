@@ -22,3 +22,125 @@
     > Press 'Commit'
     > Press 'Sync Changes'
     Pressing Sync Changes sends your changes (and the message) to GitHub
+
+# Habit Tracker App
+
+## 📌 Description
+
+This is a full-stack habit tracking application that allows users to:
+
+* Add habits
+* Mark habits as completed
+* Delete habits
+* Track habits using a MongoDB database
+
+The application uses:
+
+* Frontend: HTML, CSS, JavaScript
+* Backend: Node.js with Express
+* Database: MongoDB with Mongoose
+
+---
+
+## ⚙️ Required Dependencies
+
+Install all dependencies using:
+
+```bash
+npm install
+```
+
+Required packages:
+
+* express
+* mongoose
+* path (built-in)
+
+---
+
+## 🛠️ Setup Instructions
+
+1. Clone or download the project folder
+
+2. Navigate into the project directory:
+
+```bash
+cd 411-group-project
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Make sure MongoDB is running:
+
+* Open MongoDB Compass OR
+* Run:
+
+```bash
+mongod
+```
+
+5. Ensure your database connection is set correctly in:
+
+```
+config/database.js
+```
+
+Example:
+
+```js
+mongodb://127.0.0.1:27017/habit-tracker
+```
+
+---
+
+## ▶️ How to Run the Project
+
+Start the server using:
+
+```bash
+node server.js
+```
+
+You should see:
+
+```
+MongoDB connected successfully
+Server running on http://localhost:3000
+```
+
+---
+
+## 🌐 Access the App
+
+Open your browser and go to:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🧪 Features
+
+* Add a new habit → saved to MongoDB
+* Mark habit as done → updates database
+* Delete habit → removes from database
+* Data persists after page refresh
+
+---
+
+## ⚠️ Notes
+
+* MongoDB must be running before starting the server
+* If port 3000 is in use, change it in `server.js`
+* If dependencies are missing, rerun:
+
+```bash
+npm install
+```
+
+---
