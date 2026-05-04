@@ -1,5 +1,6 @@
 const calendar = document.getElementById("calendar");
 const monthTitle = document.getElementById("monthTitle");
+let completedDates = [];
 
 const prevBtn = document.getElementById("prevMonth");
 const nextBtn = document.getElementById("nextMonth");
@@ -11,7 +12,7 @@ const months = [
   "July","August","September","October","November","December"
 ];
 
-function renderCalendar(date) {
+function drawCalendar(date) {
   calendar.innerHTML = "";
 
   const year = date.getFullYear();
@@ -26,25 +27,27 @@ function renderCalendar(date) {
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-weekDays.forEach(day => {
-  const header = document.createElement("div");
-  header.classList.add("weekday");
-  header.textContent = day;
-  calendar.appendChild(header);
-});
+  // Week headers
+  weekDays.forEach(day => {
+    const header = document.createElement("div");
+    header.classList.add("weekday");
+    header.textContent = day;
+    calendar.appendChild(header);
+  });
 
-for (let i = 0; i < firstDay; i++) {
-  const empty = document.createElement("div");
-  empty.classList.add("empty");
-  calendar.appendChild(empty);
-}
+  // Empty slots
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement("div");
+    empty.classList.add("empty");
+    calendar.appendChild(empty);
+  }
 
+  // Days
   for (let d = 1; d <= daysInMonth; d++) {
     const day = document.createElement("div");
     day.classList.add("day");
     day.textContent = d;
 
-    // Highlight today
     if (
       d === today.getDate() &&
       month === today.getMonth() &&
@@ -52,6 +55,16 @@ for (let i = 0; i < firstDay; i++) {
     ) {
       day.classList.add("today");
     }
+
+    completedDates.forEach(cd => {
+      if (
+        cd.getDate() === d &&
+        cd.getMonth() === month &&
+        cd.getFullYear() === year
+      ) {
+        day.classList.add("completed-day");
+      }
+    });
 
     calendar.appendChild(day);
   }

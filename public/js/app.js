@@ -114,8 +114,9 @@ function toggleHabit(habit) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      completed: !habit.completed
-    })
+      completed: !habit.completed,
+      completedDate: !habit.completed ? new Date() : null
+  })
   })
   .then(res => {
     console.log("PUT response:", res);
