@@ -73,13 +73,13 @@ function drawCalendar(date) {
 // Navigation
 prevBtn.onclick = () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar(currentDate);
+  drawCalendar(currentDate);
 };
 
 nextBtn.onclick = () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar(currentDate);
+  drawCalendar(currentDate);
 };
 
 // Initial render
-renderCalendar(currentDate);
+drawCalendar(currentDate);
