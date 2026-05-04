@@ -269,6 +269,7 @@ li {
 /* Today highlight */
 .today {
   border: 2px solid #4a90e2;
+  color: black;
   background: #f0f0f0;
 }
 
