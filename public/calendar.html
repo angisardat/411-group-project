@@ -16,9 +16,14 @@
   </div>
 </header>
 
-<div class="container">
-  <h2>📅 Year Calendar</h2>
-  <div id="calendar" class="calendar-grid"></div>
+<div class="calendar-wrapper">
+  <div class="calendar-header">
+  <button id="prevMonth" class="nav-btn">⬅</button>
+  <h2 id="monthTitle"></h2>
+  <button id="nextMonth" class="nav-btn">➡</button>
+  </div>
+
+  <div id="calendar" class="calendar-single"></div>
 </div>
 
 <script src="js/calendar.js"></script>

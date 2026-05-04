@@ -146,3 +146,134 @@ li {
   border-radius: 5px;
   background: #f0f0f0;
 }
+
+/* Calendar Header */
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.calendar-header button {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+}
+
+/* Calendar layout */
+.calendar-single {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.day {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+/* Highlight TODAY */
+.today {
+  background: #4a90e2;
+  color: white;
+  border-radius: 50%;
+}
+
+.calendar-single {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+/* Center entire calendar */
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Month navigation */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+  font-size: 28px;
+  min-width: 200px;
+  text-align: center;
+}
+
+/* Navigation buttons */
+.nav-btn {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 50%;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  background: #357abd;
+}
+
+/* Calendar grid */
+.calendar-single {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+
+  /* 👇 THIS centers and sizes it */
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Weekday headers */
+.weekday {
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Days */
+.day {
+  aspect-ratio: 1 / 1;
+  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+/* Today highlight */
+.today {
+  background: #4a90e2;
+  color: white;
+  border-radius: 50%;
+}
+
+/* Empty spaces */
+.empty {
+  visibility: hidden;
+}
