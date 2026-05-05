@@ -7,8 +7,6 @@ const habitList = document.getElementById("habitList");
 const completedCountEl = document.getElementById("completedCount");
 const streakEl = document.getElementById("streak");
 const addBtn = document.getElementById("addBtn");
-const getSuggestion = document.getElementById("getSuggestion"); 
-const username = localStorage.getItem("user-settings"); 
 
 function loadHabits() {
   fetch("/api/habits")
@@ -18,6 +16,13 @@ function loadHabits() {
       renderHabits();
     });
 }
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", (e) => {
+
+    document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
+  });
+});
 
 // Render UI
 function renderHabits() {
@@ -75,13 +80,11 @@ function updateStats() {
 const completed = habits.filter(h => h.completed).length;
 completedCountEl.textContent = completed;
 
-const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak || 0), 0); 
-streakEl.textContent = maxStreak + " days";
+streakEl.textContent = streak + " days";
 }
 
-addBtn.addEventListener("click", () => {
-  const input = document.getElementById("habitInput");
-  const value = input.value.trim();
+$("#addBtn").click(function () {
+  const value = $("#habitInput").val().trim();
 
   if (value === "") return;
 
@@ -93,93 +96,57 @@ addBtn.addEventListener("click", () => {
     body: JSON.stringify({
       name: value,
       completed: false,
-      streak: 0
+      completedDates: []
     })
   })
   .then(res => res.json())
   .then(() => {
-    input.value = "";
-    loadHabits(); // refresh from database
+    $("#habitInput").val(""); // jQuery DOM update
+    loadHabits();
   });
 });
 
 // Toggle Habit
-function toggleHabit(habit) 
-{
-  fetch(`/api/habits/${habit._id}`, 
-    {
+function toggleHabit(habit) {
+  const today = new Date();
+  const todayStr = today.toDateString();
+
+  let completedDates = habit.completedDates ? [...habit.completedDates] : [];
+
+  const newCompleted = !habit.completed;
+
+  if (newCompleted) {
+    // ✅ User is marking DONE → ADD today
+    const alreadyExists = completedDates.some(date =>
+      new Date(date).toDateString() === todayStr
+    );
+
+    if (!alreadyExists) {
+      completedDates.push(today.toISOString());
+    }
+
+  } else {
+    // ❌ User is UNDOING → REMOVE today
+    completedDates = completedDates.filter(date =>
+      new Date(date).toDateString() !== todayStr
+    );
+  }
+
+  fetch(`/api/habits/${habit._id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      completed: !habit.completed,
-      streak: !habit.completed ? (habit.streak || 0) + 1 : 0
+      completed: newCompleted,
+      completedDates: completedDates
+    })
   })
-})
-  .then(res => {
-    console.log("PUT response:", res);
-    return res.json();
-  })
-  .then(data => {
-    console.log("Updated habit:", data);
+  .then(res => res.json())
+  .then(() => {
     loadHabits();
-  })
-  .catch(err => {
-    console.error("PUT error:", err);
   });
-  };
+}
 
 // Initial Load
 loadHabits();
-
-//triggers API call
-getSuggestion.addEventListener("click", () =>
-{
-  try {
-    const habitNames = habits.map(habit=>habit.name).join(","); 
-
-    if(!habits)
-    {
-      alert("Please input a habit!"); 
-      return; 
-    }
-
-    fetch("/api/suggest",
-  {
-    method: "POST", 
-    headers: 
-    {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({habits: habitNames})
-  })
-.then(res=>{
-  console.log("response: " + res.status)
-  return res.json(); 
-})
-.then(data=>{
-  console.log("data" + data) 
-  console.log(JSON.stringify(data))
-  const suggestions = data.candidates[0].content.parts[0].text; 
-  chatInfo.textContent = suggestions; 
-})
-.catch(err=>
-  {
-    console.error("error" + err)
-  })
-
-  }
-
-  catch
-  {
-    console.log("Error")
-  }
-
-})
-
-function loadUsername()
-{
-  document.getElementById("username").textContent = "Hello, " + username + "!"; 
-}
-loadUsername();

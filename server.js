@@ -1,4 +1,3 @@
-require("dotenv").config(); 
 const path = require("path");
 const express   = require("express");
 const connectDB = require("./config/database");
@@ -10,8 +9,6 @@ const PORT = 3000;
 connectDB();
 
 app.use(express.json());
-
-const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}` 
 
 // GET all habits
 app.get("/api/habits", async (req, res) => {
@@ -27,24 +24,24 @@ app.post("/api/habits", async (req, res) => {
 
 // PUT (changes habit to done/not done)
 app.put("/api/habits/:id", async (req, res) => {
-  const habit = await Habit.findById(req.params.id); 
-
-  let newStreak = habit.streak; 
-  if(req.body.completed === true)
-  {
-    newStreak = habit.streak + 1; 
-  }
-
-  else if(req.body.completed === false)
-  {
-    newStreak = Math.max(0, habit.streak - 1); 
-  }
+  const { completed, completedDates } = req.body;
 
   const updated = await Habit.findByIdAndUpdate(
     req.params.id,
-    req.body,
-    { new: true }
+    {
+      $set: {
+        completed: completed,
+        completedDates: completedDates
+      }
+    },
+    {
+      returnDocument: "after",
+      runValidators: true
+    }
   );
+
+  console.log("🔥 PUT HIT", req.params.id);
+  console.log("BODY:", req.body);
   res.json(updated);
 });
 
@@ -52,32 +49,6 @@ app.put("/api/habits/:id", async (req, res) => {
 app.delete("/api/habits/:id", async (req, res) => {
   await Habit.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted" });
-});
-
-app.post("/api/suggest", async(req, res) => 
-{ 
-  try{
-  const result = await fetch(URL,
-    {
-      method: "POST", 
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Can you please suggest habits based on ${req.body.habits}. Please 
-              keep your response to 30 words max.`
-            }]
-          }]
-        })
-    })
-  const data = await result.json(); 
-  res.json(data); 
-  }
-
-  catch(err)
-  {
-    console.error("Gemini error:" + err); 
-  }
 });
 
 app.use(express.static(path.join(__dirname, "public")));

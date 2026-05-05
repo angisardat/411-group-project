@@ -70,16 +70,35 @@ function drawCalendar(date) {
   }
 }
 
+function loadCalendar() {
+  fetch("/api/habits")
+    .then(res => res.json())
+    .then(habits => {
+
+      completedDates = [];
+
+      habits.forEach(habit => {
+        if (habit.completedDates) {
+          habit.completedDates.forEach(date => {
+            completedDates.push(new Date(date));
+          });
+        }
+      });
+
+      drawCalendar(currentDate);
+    });
+}
+
 // Navigation
 prevBtn.onclick = () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
-  drawCalendar(currentDate);
+  loadCalendar();
 };
 
 nextBtn.onclick = () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
-  drawCalendar(currentDate);
+  loadCalendar();
 };
 
 // Initial render
-drawCalendar(currentDate);
+loadCalendar();
