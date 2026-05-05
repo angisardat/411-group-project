@@ -83,9 +83,8 @@ completedCountEl.textContent = completed;
 streakEl.textContent = streak + " days";
 }
 
-addBtn.addEventListener("click", () => {
-  const input = document.getElementById("habitInput");
-  const value = input.value.trim();
+$("#addBtn").click(function () {
+  const value = $("#habitInput").val().trim();
 
   if (value === "") return;
 
@@ -97,37 +96,55 @@ addBtn.addEventListener("click", () => {
     body: JSON.stringify({
       name: value,
       completed: false,
+      completedDates: []
     })
   })
   .then(res => res.json())
   .then(() => {
-    input.value = "";
-    loadHabits(); // refresh from database
+    $("#habitInput").val(""); // jQuery DOM update
+    loadHabits();
   });
 });
 
 // Toggle Habit
 function toggleHabit(habit) {
+  const today = new Date();
+  const todayStr = today.toDateString();
+
+  let completedDates = habit.completedDates ? [...habit.completedDates] : [];
+
+  const newCompleted = !habit.completed;
+
+  if (newCompleted) {
+    // ✅ User is marking DONE → ADD today
+    const alreadyExists = completedDates.some(date =>
+      new Date(date).toDateString() === todayStr
+    );
+
+    if (!alreadyExists) {
+      completedDates.push(today.toISOString());
+    }
+
+  } else {
+    // ❌ User is UNDOING → REMOVE today
+    completedDates = completedDates.filter(date =>
+      new Date(date).toDateString() !== todayStr
+    );
+  }
+
   fetch(`/api/habits/${habit._id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      completed: !habit.completed,
-      completedDate: !habit.completed ? new Date() : null
+      completed: newCompleted,
+      completedDates: completedDates
+    })
   })
-  })
-  .then(res => {
-    console.log("PUT response:", res);
-    return res.json();
-  })
-  .then(data => {
-    console.log("Updated habit:", data);
+  .then(res => res.json())
+  .then(() => {
     loadHabits();
-  })
-  .catch(err => {
-    console.error("PUT error:", err);
   });
 }
 

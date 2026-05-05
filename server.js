@@ -24,11 +24,24 @@ app.post("/api/habits", async (req, res) => {
 
 // PUT (changes habit to done/not done)
 app.put("/api/habits/:id", async (req, res) => {
+  const { completed, completedDates } = req.body;
+
   const updated = await Habit.findByIdAndUpdate(
     req.params.id,
-    req.body,
-    { new: true }
+    {
+      $set: {
+        completed: completed,
+        completedDates: completedDates
+      }
+    },
+    {
+      returnDocument: "after",
+      runValidators: true
+    }
   );
+
+  console.log("🔥 PUT HIT", req.params.id);
+  console.log("BODY:", req.body);
   res.json(updated);
 });
 
