@@ -165,3 +165,54 @@ function toggleHabit(habit) {
 
 // Initial Load
 loadHabits();
+
+//triggers API call
+getSuggestion.addEventListener("click", () =>
+{
+  try {
+    const habitNames = habits.map(habit=>habit.name).join(","); 
+
+    if(!habits)
+    {
+      alert("Please input a habit!"); 
+      return; 
+    }
+
+    fetch("/api/suggest",
+  {
+    method: "POST", 
+    headers: 
+    {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({habits: habitNames})
+  })
+.then(res=>{
+  console.log("response: " + res.status)
+  return res.json(); 
+})
+.then(data=>{
+  console.log("data" + data) 
+  console.log(JSON.stringify(data))
+  const suggestions = data.candidates[0].content.parts[0].text; 
+  chatInfo.textContent = suggestions; 
+})
+.catch(err=>
+  {
+    console.error("error" + err)
+  })
+
+  }
+
+  catch
+  {
+    console.log("Error")
+  }
+
+})
+
+function loadUsername()
+{
+  document.getElementById("username").textContent = "Hello, " + username + "!"; 
+}
+loadUsername();

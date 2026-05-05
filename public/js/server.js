@@ -54,6 +54,7 @@ app.delete("/api/habits/:id", async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
+//Used AI to help me connect to Gemini API -Amelia
 app.post("/api/suggest", async(req, res) => 
 { 
   try{
