@@ -6,7 +6,7 @@ let lastCompletedDate = null;
 const habitList = document.getElementById("habitList");
 const completedCountEl = document.getElementById("completedCount");
 const streakEl = document.getElementById("streak");
-const addBtn = document.getElementById("addBtn");
+const addBtn = document.getElementById("addBtn"); 
 
 function loadHabits() {
   fetch("/api/habits")
@@ -213,6 +213,7 @@ getSuggestion.addEventListener("click", () =>
 
 function loadUsername()
 {
+  const username = localStorage.getItem("user-settings"); 
   document.getElementById("username").textContent = "Hello, " + username + "!"; 
 }
 loadUsername();
