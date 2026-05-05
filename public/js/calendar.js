@@ -70,6 +70,7 @@ function drawCalendar(date) {
   }
 }
 
+// feature does not work correctly
 function loadCalendar() {
   fetch("/api/habits")
     .then(res => res.json())

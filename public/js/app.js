@@ -41,7 +41,13 @@ function renderHabits() {
 
     // Done / Undo button
     const doneBtn = document.createElement("button");
-    doneBtn.textContent = habit.completed ? "Undo" : "Done";
+
+    if (habit.completed === true) {
+      doneBtn.textContent = "Undo";
+    } else {
+      doneBtn.textContent = "Done";
+    }
+
     doneBtn.style.width = "70px";
     doneBtn.onclick = () => toggleHabit(habit);
 
@@ -52,11 +58,11 @@ function renderHabits() {
     deleteBtn.style.marginLeft = "5px";
     deleteBtn.style.background = "#e74c3c";
 
-    deleteBtn.onclick = () => {
-      fetch(`/api/habits/${habit._id}`, {
-      method: "DELETE"
-    })
-    .then(() => {
+    deleteBtn.onclick = function() {
+      fetch("/api/habits/" + habit._id, {
+        method: "DELETE"
+      })
+      .then(function() {
         loadHabits();
       });
     };
@@ -100,6 +106,7 @@ $("#addBtn").click(function () {
     })
   })
   .then(res => res.json())
+  // runs after the data is ready
   .then(() => {
     $("#habitInput").val(""); // jQuery DOM update
     loadHabits();
@@ -111,12 +118,20 @@ function toggleHabit(habit) {
   const today = new Date();
   const todayStr = today.toDateString();
 
-  let completedDates = habit.completedDates ? [...habit.completedDates] : [];
+  let completedDates;
+
+  if (habit.completedDates) {
+    completedDates = habit.completedDates.slice();
+  } else {
+    completedDates = [];
+  }
 
   const newCompleted = !habit.completed;
 
+  // I did use AI to help write the correct format for the date
+  // and add it to an array that is then PUT to the database -Angel
   if (newCompleted) {
-    // ✅ User is marking DONE → ADD today
+    // User is marking DONE, this add's today date
     const alreadyExists = completedDates.some(date =>
       new Date(date).toDateString() === todayStr
     );
@@ -126,7 +141,7 @@ function toggleHabit(habit) {
     }
 
   } else {
-    // ❌ User is UNDOING → REMOVE today
+    // User is UNDOING, this removes today's date
     completedDates = completedDates.filter(date =>
       new Date(date).toDateString() !== todayStr
     );
