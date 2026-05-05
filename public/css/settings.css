@@ -1,0 +1,100 @@
+body
+{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: white; 
+}
+
+header {
+  background: #4a90e2;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #4a90e2;
+  color: white;
+  padding: 15px 25px;
+}
+
+.nav-left {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav-right {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: "Lucida Console", "Courier New", monospace;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.content
+{
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.user-info
+{
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+}
+
+#username-id
+{
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 20px; 
+    padding-right: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#input-text
+{
+    padding: 10px;
+    width: auto;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(95, 126, 187, 0.1); 
+    border: 1px solid rgba(193, 174, 174, 0.1); 
+    backdrop-filter: blur(10px); 
+}
+
+#input-username
+{
+    width: auto;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(95, 126, 187, 0.1); 
+    border: 1px solid rgba(193, 174, 174, 0.1); 
+    backdrop-filter: blur(10px); 
+}

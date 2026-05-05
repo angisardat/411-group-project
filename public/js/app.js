@@ -8,6 +8,7 @@ const completedCountEl = document.getElementById("completedCount");
 const streakEl = document.getElementById("streak");
 const addBtn = document.getElementById("addBtn");
 const getSuggestion = document.getElementById("getSuggestion"); 
+const username = localStorage.getItem("user-settings"); 
 
 function loadHabits() {
   fetch("/api/habits")
@@ -176,3 +177,9 @@ getSuggestion.addEventListener("click", () =>
   }
 
 })
+
+function loadUsername()
+{
+  document.getElementById("username").textContent = "Hello, " + username + "!"; 
+}
+loadUsername();
