@@ -1,4 +1,3 @@
-require("dotenv").config(); 
 const path = require("path");
 const express   = require("express");
 const connectDB = require("./config/database");
@@ -27,29 +26,25 @@ app.post("/api/habits", async (req, res) => {
 
 // PUT (changes habit to done/not done)
 app.put("/api/habits/:id", async (req, res) => {
-  const completed = req.body.completed;
-  const completedDates = req.body.completedDates;
+  const habit = await Habit.findById(req.params.id); 
 
-  try {
-    const updated = await Habit.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: {
-          completed: completed,
-          completedDates: completedDates
-        }
-      },
-      {
-        returnDocument: "after",
-        runValidators: true
-      }
-    );
-
-    res.json(updated);
-
-  } catch (error) {
-    res.status(500).json({ message: "Error updating habit" });
+  let newStreak = habit.streak; 
+  if(req.body.completed === true)
+  {
+    newStreak = habit.streak + 1; 
   }
+
+  else if(req.body.completed === false)
+  {
+    newStreak = Math.max(0, habit.streak - 1); 
+  }
+
+  const updated = await Habit.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.json(updated);
 });
 
 // DELETE habit
@@ -58,6 +53,7 @@ app.delete("/api/habits/:id", async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
+//Used AI to help me connect to Gemini API -Amelia
 app.post("/api/suggest", async(req, res) => 
 { 
   try{
